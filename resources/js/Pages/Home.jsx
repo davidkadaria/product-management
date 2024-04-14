@@ -1,4 +1,6 @@
-import { Table, Typography } from "antd";
+import { InertiaLink } from "@inertiajs/inertia-react";
+import { Flex, Table, Typography, Button } from "antd";
+import { DashboardOutlined } from "@ant-design/icons";
 import { getProductListTableColumns } from "../utils";
 
 const { Title } = Typography;
@@ -6,7 +8,15 @@ const { Title } = Typography;
 function Home({ products }) {
     return (
         <div>
-            <Title>Products List</Title>
+            <Flex justify="space-between" align="center">
+                <Title>Products List</Title>
+
+                <InertiaLink href={"/dashboard"}>
+                    <Button icon={<DashboardOutlined />} type="primary">
+                        Dashboard
+                    </Button>
+                </InertiaLink>
+            </Flex>
             <Table
                 dataSource={products.data.map((product) => ({
                     key: product.id,
