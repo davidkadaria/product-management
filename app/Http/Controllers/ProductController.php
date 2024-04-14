@@ -21,4 +21,10 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
+    public function dashboard()
+    {
+
+        return Inertia::render('Dashboard');
+    }
 }
