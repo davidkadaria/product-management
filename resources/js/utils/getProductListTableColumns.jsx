@@ -1,4 +1,5 @@
-import { Flex, Button, Image } from "antd";
+import { Inertia } from "@inertiajs/inertia";
+import { Flex, Button, Image, Popconfirm, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { imageFallback } from "../constants";
 
@@ -82,14 +83,53 @@ function getProductListTableColumns() {
         {
             title: "Action",
             key: "action",
-            render: (text, record) => (
-                <Flex gap="small">
-                    <Button type="primary">View Details</Button>
-                    <Button type="primary" danger icon={<DeleteOutlined />}>
-                        Delete
-                    </Button>
-                </Flex>
-            ),
+            render: (item) => {
+                return (
+                    <Flex gap="small">
+                        <Popconfirm
+                            title="Delete the product"
+                            description="Are you sure you want to delete this product?"
+                            onConfirm={async () => {
+                                Inertia.delete(`/products/${item.id}`, {
+                                    onSuccess: () => {
+                                        message.success(
+                                            `Product "${item.name}" deleted.`
+                                        );
+                                    },
+                                    onError: () => {
+                                        message.error(
+                                            `Failed to delete "${item.name}".`
+                                        );
+                                    },
+                                });
+                            }}
+                            onCancel={() =>
+                                message.error(
+                                    `Deletion of "${item.name}" cancelled.`
+                                )
+                            }
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button
+                                type="primary"
+                                danger
+                                icon={<DeleteOutlined />}
+                            >
+                                Delete
+                            </Button>
+                        </Popconfirm>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                Inertia.visit(`/products/${item.id}`);
+                            }}
+                        >
+                            View Details
+                        </Button>
+                    </Flex>
+                );
+            },
         },
     ];
 }
