@@ -1,4 +1,6 @@
-import { InertiaLink } from "@inertiajs/inertia-react";
+import { Inertia } from "@inertiajs/inertia";
+import { Link } from "@inertiajs/inertia-react";
+import { router } from "@inertiajs/react";
 import { Flex, Table, Typography, Button } from "antd";
 import { DashboardOutlined } from "@ant-design/icons";
 import { getProductListTableColumns } from "../utils";
@@ -11,11 +13,11 @@ function Home({ products }) {
             <Flex justify="space-between" align="center">
                 <Title>Products List</Title>
 
-                <InertiaLink href={"/dashboard"}>
+                <Link href={"/dashboard"}>
                     <Button icon={<DashboardOutlined />} type="primary">
                         Dashboard
                     </Button>
-                </InertiaLink>
+                </Link>
             </Flex>
             <Table
                 dataSource={products.data.map((product) => ({
@@ -28,7 +30,14 @@ function Home({ products }) {
                     total: products.total,
                     current: products.current_page,
                 }}
-                onChange={(pagination) => console.log("pagination", pagination)}
+                onChange={(pagination) => {
+                    Inertia.reload({
+                        data: {
+                            page: pagination.current,
+                            per_page: pagination.pageSize,
+                        },
+                    });
+                }}
             />
         </div>
     );
