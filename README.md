@@ -9,7 +9,7 @@ This repository contains a simple product management system built using Laravel 
 1. **Clone the repository:**
 
     ```
-    git clone https://github.com/davidkadaria/product-management
+    git clone https://github.com/davidkadaria/product-management && cd product-management
     ```
 
 2. **Install PHP dependencies:**
@@ -24,15 +24,23 @@ This repository contains a simple product management system built using Laravel 
     npm install
     ```
 
-4. **Run migrations:**
+4. **Configure .env file as you prefer. Just copy `.env.example` file contents to `.env` file and configure.**
+
+5. **Run migrations:**
 
     ```
     php artisan migrate
     ```
 
-5. **Seed the database:**
+6. **Seed the database:**
+
     ```
     php artisan db:seed
+    ```
+
+7. **Set Up storage link:**
+    ```
+    php artisan storage:link
     ```
 
 ## Usage
