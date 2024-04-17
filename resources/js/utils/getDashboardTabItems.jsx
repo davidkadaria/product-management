@@ -1,21 +1,58 @@
 import { useState } from "react";
-
-import { Flex, Button, Form, Input, InputNumber, Upload, Select } from "antd";
+import { Inertia } from "@inertiajs/inertia";
+import {
+    Flex,
+    Button,
+    Form,
+    Input,
+    InputNumber,
+    Upload,
+    Select,
+    message,
+} from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
-function getDashboardTabItems() {
+function getDashboardTabItems({ categories }) {
+    const [imageError, setImageError] = useState(false);
+    const [productForm] = Form.useForm();
+    const [categoryForm] = Form.useForm();
+
     const onFinish = (values) => {
+        if (!values.image || values.image.length === 0) {
+            setImageError(true);
+            return;
+        }
+
+        values.image = values.image.map((file) => file.originFileObj);
+
         console.log("Success:", values);
+        Inertia.post("/create-product", values, {
+            forceFormData: true,
+        });
+        productForm.resetFields();
+
+        message.success("Product created successfully!");
     };
+
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
     };
 
-    const normFile = (e) => {
+    const onFinishCategory = (values) => {
+        Inertia.post("/create-category", values);
+        categoryForm.resetFields();
+        message.success("Category created successfully!");
+    };
+
+    const onFinishFailedCategory = (errorInfo) => {
+        console.log("Failed:", errorInfo);
+    };
+
+    const getFile = (e) => {
         if (Array.isArray(e)) {
             return e;
         }
-        return e?.fileList;
+        return e && e.fileList;
     };
 
     return [
@@ -25,6 +62,7 @@ function getDashboardTabItems() {
             children: (
                 <Flex justify="center">
                     <Form
+                        form={productForm}
                         name="create-product"
                         layout="vertical"
                         style={{ width: "40%", minWidth: "300px" }}
@@ -72,13 +110,14 @@ function getDashboardTabItems() {
                             ]}
                         >
                             <Select mode="multiple" value={[]} allowClear>
-                                <Select.Option value="demo">Demo</Select.Option>
-                                <Select.Option value="demo1">
-                                    Demo
-                                </Select.Option>
-                                <Select.Option value="demo2">
-                                    Demo
-                                </Select.Option>
+                                {categories.map((category) => (
+                                    <Select.Option
+                                        key={category.id}
+                                        value={category.name}
+                                    >
+                                        {category.name}
+                                    </Select.Option>
+                                ))}
                             </Select>
                         </Form.Item>
 
@@ -105,11 +144,12 @@ function getDashboardTabItems() {
                             name="image"
                             valuePropName="fileList"
                             required={true}
-                            getValueFromEvent={normFile}
+                            getValueFromEvent={getFile}
                         >
                             <Upload.Dragger
-                                method="GET"
+                                onChange={() => setImageError(false)}
                                 listType="picture-card"
+                                beforeUpload={() => false}
                             >
                                 <p className="ant-upload-drag-icon">
                                     <InboxOutlined />
@@ -120,6 +160,11 @@ function getDashboardTabItems() {
                                 <p className="ant-upload-hint">
                                     Support for a single or bulk upload.
                                 </p>
+                                {imageError && (
+                                    <p style={{ color: "red", margin: 0 }}>
+                                        Image is required!
+                                    </p>
+                                )}
                             </Upload.Dragger>
                         </Form.Item>
 
@@ -139,7 +184,45 @@ function getDashboardTabItems() {
         {
             key: "2",
             label: "Create Category",
-            children: "Content of Tab Pane 2",
+            children: (
+                <Flex justify="center">
+                    <Form
+                        form={categoryForm}
+                        name="create-category"
+                        layout="vertical"
+                        style={{ width: "40%", minWidth: "300px" }}
+                        initialValues={{
+                            remember: false,
+                        }}
+                        onFinish={onFinishCategory}
+                        onFinishFailed={onFinishFailedCategory}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            label="Category Name"
+                            name="category_name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Category name is required!",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                size="large"
+                            >
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Flex>
+            ),
         },
     ];
 }
