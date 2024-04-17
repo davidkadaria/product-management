@@ -9,9 +9,12 @@ class ProductFactory extends Factory
 {
     protected $model = Product::class;
     protected $dummyImages = [
-        'https://wallpapercave.com/wp/wp10424505.png',
-        'https://img.goodfon.com/original/1024x768/3/44/naruto-naruto-saske-uchiha.jpg',
-        'https://images.wallpapersden.com/image/download/jiraiya-naruto_a2pobG6UmZqaraWkpJRmZWdprWxrbQ.jpg',
+        'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/35302887-bf5b-4c46-a9e0-fc72c65ffb50/d2zaii3-22e60a2b-a164-44bd-a487-cb16589a4799.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM1MzAyODg3LWJmNWItNGM0Ni1hOWUwLWZjNzJjNjVmZmI1MFwvZDJ6YWlpMy0yMmU2MGEyYi1hMTY0LTQ0YmQtYTQ4Ny1jYjE2NTg5YTQ3OTkuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.hm2OTe9W756fttOuga2kQ5lWBIWQcTyfHkS8qvTygyQ',
+        'https://wallpapercave.com/wp/wp5609388.jpg',
+        'https://live.staticflickr.com/65535/49389103952_ff4b2cf256.jpg',
+        'https://farm5.staticflickr.com/4466/36906009863_625ce02e9f.jpg',
+        'https://farm6.staticflickr.com/5112/6970631088_f8a396cc6a.jpg',
+        'https://s23209.pcdn.co/wp-content/uploads/2022/07/220602_DD_The-Best-Ever-Cheeseburger_267-500x500.jpg'
     ];
 
     public function definition()

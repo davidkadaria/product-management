@@ -21,6 +21,5 @@ class ProductSeeder extends Seeder
 
             $product->categories()->attach($categoryIds);
         });
-        ;
     }
 }
