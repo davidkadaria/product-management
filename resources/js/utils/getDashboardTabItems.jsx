@@ -28,10 +28,15 @@ function getDashboardTabItems({ categories }) {
         console.log("Success:", values);
         Inertia.post("/create-product", values, {
             forceFormData: true,
+
+            onSuccess: () => {
+                message.success("Product created successfully!");
+            },
+            onError: () => {
+                message.error("Failed to create product.");
+            },
         });
         productForm.resetFields();
-
-        message.success("Product created successfully!");
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -39,9 +44,15 @@ function getDashboardTabItems({ categories }) {
     };
 
     const onFinishCategory = (values) => {
-        Inertia.post("/create-category", values);
+        Inertia.post("/create-category", values, {
+            onSuccess: () => {
+                message.success("Category created successfully!");
+            },
+            onError: () => {
+                message.error("Failed to create category.");
+            },
+        });
         categoryForm.resetFields();
-        message.success("Category created successfully!");
     };
 
     const onFinishFailedCategory = (errorInfo) => {
