@@ -8,7 +8,7 @@ const { Header, Content } = Layout;
 
 const { Title } = Typography;
 
-function Home({ products }) {
+function Home({ products, categories }) {
     return (
         <Layout>
             <Header
@@ -26,11 +26,11 @@ function Home({ products }) {
             </Header>
             <Content>
                 <Table
-                    dataSource={products.data.map((product) => ({
+                    dataSource={products.data?.map((product) => ({
                         key: product.id,
                         ...product,
                     }))}
-                    columns={getProductListTableColumns()}
+                    columns={getProductListTableColumns({ categories })}
                     pagination={{
                         pageSize: products.per_page,
                         total: products.total,
