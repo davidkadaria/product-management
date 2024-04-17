@@ -86,7 +86,7 @@ class ProductController extends Controller
         foreach ($request->file('image') as $image) {
 
             $path = $image->store('product-images', 'public');
-            $imagePaths[] = 'storage/' . $path;
+            $imagePaths[] = '/storage/' . $path;
         }
 
         // Create the product
