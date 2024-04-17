@@ -12,15 +12,51 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $paginationDefaults = ['per_page' => 10, 'page' => 1];
+        // Filtering params
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $minPrice = $request->input('minPrice');
+        $maxPrice = $request->input('maxPrice');
+        $category = $request->input('category');
 
+        // Query builder
+        $query = Product::with('categories')->orderBy('created_at', 'desc');
+
+        // Filtering
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+
+        if ($description) {
+            $query->where('description', 'like', '%' . $description . '%');
+        }
+
+        if ($minPrice) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        if ($category) {
+            $query->whereHas('categories', function ($q) use ($category) {
+                $q->where('name', $category);
+            });
+        }
+
+        // Pagination
+        $paginationDefaults = ['per_page' => 10, 'page' => 1];
         $perPage = $request->input('per_page', $paginationDefaults['per_page']);
         $page = $request->input('page', $paginationDefaults['page']);
+        $products = $query->paginate($perPage, ['*'], 'page', $page);
 
-        $products = Product::with('categories')->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
+        // Get categories (and sort by name)
+        $categories = Category::orderBy('name')->get();
 
         return Inertia::render('Home', [
             'products' => $products,
+            'categories' => $categories,
         ]);
     }
 
