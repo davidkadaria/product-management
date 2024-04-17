@@ -8,8 +8,8 @@ const { Header, Content } = Layout;
 
 const { Title } = Typography;
 
-function Dashboard() {
-    const items = getDashboardTabItems();
+function Dashboard({ categories }) {
+    const items = getDashboardTabItems({ categories });
 
     return (
         <Layout>
